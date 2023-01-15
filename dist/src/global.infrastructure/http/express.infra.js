@@ -14,11 +14,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const config_1 = __importDefault(require("config"));
-const logger_1 = __importDefault(require("./utils/logger"));
-const mongoose_connect_1 = __importDefault(require("./global.infrastructure/datasources/mongodb/mongoose.connect"));
+const mongoose_connect_1 = __importDefault(require("../datasources/mongodb/mongoose.connect"));
+const logger_1 = __importDefault(require("../../utils/logger"));
+const user_route_1 = __importDefault(require("../../user/controller/user.route"));
 const app = (0, express_1.default)();
 const PORT = config_1.default.get("PORT");
-app.listen(PORT, () => __awaiter(void 0, void 0, void 0, function* () {
-    logger_1.default.info(`Application is listening on port ${PORT}`);
-    yield (0, mongoose_connect_1.default)();
-}));
+function loggerMiddleware(request, response, next) {
+    logger_1.default.info(`${request.method} ${request.path}`);
+    next();
+}
+const expressServer = () => {
+    app.use(loggerMiddleware);
+    app.get("/", (_req, _res) => {
+        _res.send("Hello from express");
+    });
+    app.use(user_route_1.default);
+    app.listen(PORT, () => __awaiter(void 0, void 0, void 0, function* () {
+        logger_1.default.info(`Express Application is Listening on Port ${PORT}`);
+        yield (0, mongoose_connect_1.default)();
+    }));
+};
+exports.default = expressServer;
+//# sourceMappingURL=express.infra.js.map

@@ -20,7 +20,7 @@ const mongodb_connect = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         mongoose_1.default.set("strictQuery", false);
         yield mongoose_1.default.connect(db_uri);
-        logger_1.default.info(`Database connection successful`);
+        logger_1.default.info(`MongoDb Database Connection Successful`);
     }
     catch (error) {
         logger_1.default.error(`Failed to connect to mongodb database! -  ${error}`);
@@ -28,3 +28,4 @@ const mongodb_connect = () => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.default = mongodb_connect;
+//# sourceMappingURL=mongoose.connect.js.map
